@@ -30,11 +30,11 @@ export interface Diff {
   next: JSON;
 };
 
-export const enum Type {
-  CREATE = 'CREATE',
-  UPDATE = 'UPDATE',
-  DELETE = 'DELETE',
-  UNCHANGE = 'UNCHANGE',
+export enum Type {
+  CREATE = 0, // 'CREATE'
+  UPDATE = 1, // 'UPDATE'
+  DELETE = 2, // 'DELETE'
+  UNCHANGE = 3, // 'UNCHANGE'
 }
 
 function diffPrimitive(prev: any, next: any): Diff {
