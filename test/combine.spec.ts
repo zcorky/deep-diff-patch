@@ -3,7 +3,7 @@ import { expect } from 'chai';
 
 import { diff, patch } from '../src/index';
 
-describe('deep diff', () => {
+describe('deep diff & patch', () => {
   // same deep & same primitive & same type
   it('deep & primitive & type', () => {
     const prev = '123';

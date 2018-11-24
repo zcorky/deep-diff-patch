@@ -9,7 +9,11 @@ describe('deep diff', () => {
     const prev = '123';
     const next = '456';
     const diffs = diff(prev, next);
-    expect(diffs).to.deep.equal({ type: Type.UPDATE, prev: '123', next: '456' });
+    expect(diffs).to.deep.equal({
+      type: Type.UPDATE,
+      prev: '123',
+      next: '456',
+    });
   });
 
   // same deep & same primitive & not same type
