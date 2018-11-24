@@ -1,7 +1,7 @@
 {
   "name": "@zcorky/deep-diff-patch",
-  "version": "0.0.1",
-  "description": "Give a deep-diff-patch for your app.",
+  "version": "0.0.2",
+  "description": "common deep diff & patch algorithm, depended by data diff, virtual-dom",
   "main": "lib/index.js",
   "module": "lib/index.js",
   "repository": "https://github.com/zcorky/deep-diff-patch",
