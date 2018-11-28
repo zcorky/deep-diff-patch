@@ -4,6 +4,14 @@ import { expect } from 'chai';
 import { Type, patch } from '../src/index';
 
 describe('deep patch', () => {
+  // unpatch
+  it('unchange primitive', () => {
+    const prev = '123';
+    const diffs = { };
+    const next = patch(prev, diffs);
+    expect(next).to.deep.equal('123');
+  })
+
   // same deep & same primitive & same type
   it('deep & primitive & type', () => {
     const prev = '123';
