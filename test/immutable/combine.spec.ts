@@ -1,11 +1,20 @@
 import { expect } from 'chai';
 // import * as window from 'global/window';
 
-import { diff, patch } from '../src/index';
+import { diff, patch } from '../../src/immutable';
 
-describe('deep diff & patch', () => {
+describe('immutable diff & patch', () => {
+  // unpatch
+  it('unchange primitive patch', () => {
+    const prev = '123';
+    const diffs = { };
+    const next = patch(prev, diffs);
+    expect(next === prev).to.equal(true);
+    expect(next === '123').to.equal(true);
+  })
+
   // same deep & same primitive & same type
-  it('deep & primitive & type', () => {
+  it('primitive & type', () => {
     const prev = '123';
     const next = '456';
     const diffs = diff(prev, next);
@@ -14,7 +23,7 @@ describe('deep diff & patch', () => {
   }); // NEW
 
   // same deep & same primitive & not same type
-  it('deep & primitive & !type', () => {
+  it('primitive & !type', () => {
     const prev = '123';
     const next = 456;
     const diffs = diff(prev, next);
@@ -22,36 +31,74 @@ describe('deep diff & patch', () => {
     expect(_next).to.deep.equal(next);
   });
 
-  it('deep & object', () => {
+  it('same', () => {
     const prev = { x: { a: 123, b: 456 } }
-    const next = { x: { a: 123, b: 789 } }
+    const next = prev;
     const diffs = diff(prev, next);
+    expect(diffs).to.be.equal(false);
+
     const _next = patch(prev, diffs);
-    expect(_next).to.deep.equal(next);
+    expect(_next).to.deep.equal(prev);
+    expect(_next === prev).to.be.equal(true);
   });
 
-  it('deep & array', () => {
-    const prev = { x: [1, 2, 3] }
-    const next = { x: [1, 4, 3] }
+  it('object & shallowCopy', () => {
+    const prev = { x: { a: 123, b: 456 } }
+    const next = { ...prev };
     const diffs = diff(prev, next);
+    expect(diffs).to.be.not.equal(false);
+
     const _next = patch(prev, diffs);
+    expect(_next === next).to.be.equal(false);
     expect(_next).to.deep.equal(next);
+    expect(_next === prev).to.be.equal(false);
+    expect(_next).to.deep.equal(prev);
   });
 
-  it('deep & object & array', () => {
-    const prev = { x: { a: [1, 2, 3] } }
-    const next = { x: { a: [1, 4, 3] } }
+  it('array & shallowCopy', () => {
+    const prev = [1, 2, 3];
+    const next = [...prev];
+
+    const diffs = diff(prev, next);
+    expect(diffs).to.be.not.equal(false);
+
+    const _next = patch(prev, diffs);
+    expect(_next === next).to.be.equal(false);
+    expect(_next).to.deep.equal(next);
+    expect(_next === prev).to.be.equal(false);
+    expect(_next).to.deep.equal(prev);
+  });
+
+  it('object & array && shallowCopy', () => {
+    const prev = { x: { a: [1, 2, 3] } };
+    const next = { x: { a: [...prev.x.a] } };
     const diffs = diff(prev, next);
     const _next = patch(prev, diffs);
+
     expect(_next).to.deep.equal(next);
+    expect(_next).to.deep.equal(prev);
+    // @TODO TYPES
+    expect((_next as any).x !== next.x).to.be.equal(true);
+    expect((_next as any).x.a !== next.x.a).to.be.equal(true);
+    expect((_next as any).x !== prev.x).to.be.equal(true);
+    expect((_next as any).x.a !== prev.x.a).to.be.equal(true);
   });
 
   it('deep & array & object', () => {
     const prev = [{ x: 1, y: 2 }, { a: 3, b: 4 }];
-    const next = [{ x: 2, y: 2 }, { a: 3, b: 4 }];
+    // const __next = [{ x: 2, y: 2 }, { a: 3, b: 4 }];
+    const next = prev.map((e, index) => index === 0 ? { ...e, x: 2 } : e);
     const diffs = diff(prev, next);
     const _next = patch(prev, diffs);
+
     expect(_next).to.deep.equal(next);
+    expect(_next).to.deep.not.equal(prev);
+    // @TODO TYPES
+    expect((_next as any)[0] !== next[0]).to.be.equal(true);
+    expect((_next as any)[0]).to.be.deep.equal(next[0]);
+    expect((_next as any)[1] === next[1]).to.be.equal(true);
+    expect((_next as any)[0] !== prev[0]).to.be.equal(true);
+    expect((_next as any)[1] === prev[1]).to.be.equal(true);
   });
 
   it('deep & array & object & netest', () => {
