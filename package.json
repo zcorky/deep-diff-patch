@@ -12,31 +12,32 @@
     "clean": "rimraf -rf lib",
     "test": "NODE_ENV=test nyc mocha test/*.spec.ts test/**/*.spec.ts --exit --timeout 10000",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "prepublish": "npm run build"
+    "prepublishOnly": "npm run build"
   },
   "devDependencies": {
     "@types/mocha": "^5.2.5",
     "@types/node": "^10.9.4",
-    "@types/sinon": "^5.0.2",
-    "@zcorky/is": "^1.0.1",
     "chai": "^4.1.2",
-    "chai-spies": "^1.0.0",
     "coveralls": "^3.0.2",
-    "global": "^4.3.2",
+    "husky": "^1.2.1",
     "mocha": "^5.2.0",
     "nyc": "^13.1.0",
     "rimraf": "^2.6.2",
-    "sinon": "^6.3.4",
     "source-map-support": "^0.5.9",
     "ts-node": "^7.0.1",
     "tslint": "^5.10.0",
     "tslint-eslint-rules": "^5.3.1",
     "tslint-jsdoc-rules": "^0.1.2",
-    "typescript": "^3.1.1"
+    "typescript": "^3.2.2"
   },
   "files": [
     "lib/"
   ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm test"
+    }
+  },
   "nyc": {
     "check-coverage": true,
     "include": [
@@ -59,6 +60,6 @@
     "access": "public"
   },
   "dependencies": {
-    "@zcorky/is": "^1.0.1"
+    "@zcorky/is": "^1.0.6"
   }
 }
