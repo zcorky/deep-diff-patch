@@ -1,6 +1,6 @@
 {
   "name": "@zcorky/deep-diff-patch",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "common deep diff & patch algorithm, depended by data diff, virtual-dom",
   "main": "lib/index.js",
   "module": "lib/index.js",
